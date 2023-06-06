@@ -19,7 +19,7 @@ class Game {
     gameOverImage: HTMLImageElement = new Image();
     message: HTMLImageElement = new Image();
     gameInitial: boolean = true;
-    constructor() {
+    public constructor() {
         this.canvas = document.getElementById("mycanvas") as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
         this.canvas.height = 576;
@@ -61,7 +61,7 @@ class Game {
             }
         });
     }
-    run(): void{
+    public run(): void{
         if(this.gameInitial){
             this.background.update();
             this.background.draw(this.ctx);
@@ -114,14 +114,18 @@ class Game {
         // this.animationFrameId = requestAnimationFrame(() => this.run());
         requestAnimationFrame(() => this.run());
     }
-    spawnPipe(): void{
+    public spawnPipe(): void{
         // const types: string[] = ["up","down"];
         const height:number = Math.floor(Math.random() * 100)+150;
         const gap: number = Math.floor(Math.random()*80)+150;
         this.pipes.push(new Pipe("down",{x:1024,y:0},height));
-        this.pipes.push(new Pipe("up",{x:1024,y:576-(this.canvas.height-height-gap)},this.canvas.height-height-gap));
+        this.pipes.push(
+            new Pipe("up",
+            {x:1024,y:576-(this.canvas.height-height-gap)},
+            this.canvas.height-height-gap)
+        );
     }
-    initial(): void{
+    public initial(): void{
         this.highScore = Math.max(this.highScore,this.score);
         if(this.highScoreDisplay) this.highScoreDisplay.innerHTML = this.highScore.toString();
         this.pipes = [];
@@ -132,7 +136,7 @@ class Game {
         this.gameOver = false;
         // requestAnimationFrame(() => this.run());
     }
-    drawGameOver(): void{
+    public drawGameOver(): void{
         if(this.ctx){
             this.ctx.drawImage(
                 this.gameOverImage,
@@ -143,7 +147,7 @@ class Game {
             );
         }
     }
-    drawMessage(): void{
+    public drawMessage(): void{
         if(this.ctx){
             this.ctx.drawImage(
                 this.message,

@@ -2,7 +2,7 @@ export class Background{
     background1: HTMLImageElement = new Image();
     background2: HTMLImageElement = new Image();
     pos: {x:number,y:number};
-    constructor(){
+    public constructor(){
         this.background1.src = "../assets/images/background-night.png";
         this.background2.src = "../assets/images/background-night.png";
         this.pos = {x:0,y:0};
@@ -15,7 +15,7 @@ export class Background{
             this.background2.height = 576;
         }
     }
-    draw(ctx:CanvasRenderingContext2D | null):void{
+    public draw(ctx:CanvasRenderingContext2D | null):void{
         ctx?.drawImage(
             this.background1,
             this.pos.x,
@@ -31,7 +31,7 @@ export class Background{
             this.background2.height
         )
     }
-    update(): void{
+    public update(): void{
         this.pos.x-=3;
         if(this.pos.x<=-1024) this.pos.x = 0;
     }

@@ -11,7 +11,7 @@ export class Pipe{
     constructor(type:string,pos:{x:number,y:number},height:number){
         this.type = type;
         this.height = height;
-        this.width = 50;
+        this.width = 100;
         this.pos = pos;
         if(this.type == "up") this.image.src = "../assets/images/up-pipe.png";
         else this.image.src = "../assets/images/down-pipe.png";
