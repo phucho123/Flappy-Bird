@@ -116,8 +116,8 @@ class Game {
     }
     public spawnPipe(): void{
         // const types: string[] = ["up","down"];
-        const height:number = Math.floor(Math.random() * 100)+150;
-        const gap: number = Math.floor(Math.random()*80)+150;
+        const height:number = Math.floor(Math.random() * 100)+120;
+        const gap: number = Math.floor(Math.random()*100)+150;
         this.pipes.push(new Pipe("down",{x:1024,y:0},height));
         this.pipes.push(
             new Pipe("up",

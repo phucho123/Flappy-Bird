@@ -28,11 +28,10 @@ export class Bird{
             // console.log(this.width,this.height);
         }
         this.center = {x:this.pos.x+this.width/2,y:this.pos.y+this.height/2};
-
     }
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
-        ctx.translate(this.pos.x,this.pos.y);
+        ctx.translate(this.center.x,this.center.y);
         ctx.rotate(this.angle);
         ctx?.drawImage(
             this.image,
