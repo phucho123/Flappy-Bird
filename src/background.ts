@@ -35,4 +35,14 @@ export class Background{
         this.pos.x-=3;
         if(this.pos.x<=-1024) this.pos.x = 0;
     }
+    changeBackground(): void{
+        if(this.background1.src.split("/").at(-1) == "background-day.png"){
+            this.background1.src = "../assets/images/background-night.png";
+            this.background2.src = "../assets/images/background-night.png";
+        }else if(this.background2.src.split("/").at(-1) == "background-night.png"){
+            this.background1.src = "../assets/images/background-day.png";
+            this.background2.src = "../assets/images/background-day.png";
+        }
+        
+    }
 }

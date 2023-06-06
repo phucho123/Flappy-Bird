@@ -12,11 +12,13 @@ class Game {
     bird: Bird = new Bird({x:100,y:288});
     pipes: Pipe[] = [];
     intervalId: any;
-    // animationFrameId: number;
+    animationFrameId: number;
     gameOver: boolean;
     score: number = 0;
     highScore: number = 0;
     gameOverImage: HTMLImageElement = new Image();
+    message: HTMLImageElement = new Image();
+    gameInitial: boolean = true;
     constructor() {
         this.canvas = document.getElementById("mycanvas") as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
@@ -25,8 +27,13 @@ class Game {
         this.scoreDisplay = document.getElementById("score") as HTMLObjectElement;
         this.startButton = document.getElementById("restart") as HTMLObjectElement;
         this.highScoreDisplay = document.getElementById("highscore") as HTMLObjectElement;
+        this.message.src = "../assets/images/message.png";
         if(this.startButton){
             this.startButton.onclick = () =>{
+                if(this.gameInitial){
+                    this.gameInitial = false;
+                    this.intervalId = setInterval(() => this.spawnPipe(),1000);
+                }
                 if(this.gameOver) this.initial();
             }
         }
@@ -35,50 +42,67 @@ class Game {
             this.gameOverImage.width = 450;
             this.gameOverImage.height = 100;
         }
-        requestAnimationFrame(() => this.run());
-        this.intervalId = setInterval(() => this.spawnPipe(),1000);
+        this.message.onload = () => {
+            this.message.width = 385;
+            this.message.height = 550;
+        }
+        this.animationFrameId = requestAnimationFrame(() => this.run());
+        this.canvas.addEventListener("click",() => {
+            this.bird.speed = -4;
+            this.bird.angle = -Math.PI/3;
+        })
     }
     run(): void{
-        if(this.bird.pos.y + this.bird.height >= 576) this.gameOver = true;
-        if(this.gameOver){
-            clearInterval(this.intervalId);
-            this.drawGameOver();
-            return;
-        }
-        this.bird.update();
-        this.background.update();
-        let numberOfPipeLost = 0;
-        this.pipes.map((pipe) => {
-            pipe.update();
-            if(pipe.checkScore(this.bird)) this.score++;
-            if(pipe.checkCollide(this.bird)){
-                // cancelAnimationFrame(this.animationFrameId);
-                this.gameOver = true;
-            }
-            if(pipe.width+pipe.pos.x < 0) numberOfPipeLost+=1;
-        });
-        if(numberOfPipeLost > 0){
-            this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
-        }
-        if(this.ctx){
+        if(this.gameInitial){
+            this.background.update();
             this.background.draw(this.ctx);
-            this.bird.draw(this.ctx);
+            this.drawMessage();
+        }else{
+            if(this.bird.pos.y + this.bird.height >= 576) this.gameOver = true;
+            if(this.gameOver){
+                cancelAnimationFrame(this.animationFrameId);
+                clearInterval(this.intervalId);
+                this.drawGameOver();
+                return;
+            }
+            this.bird.update();
+            this.background.update();
+            let numberOfPipeLost = 0;
             this.pipes.map((pipe) => {
-                if(this.ctx) pipe.draw(this.ctx);
+                pipe.update();
+                if(pipe.checkScore(this.bird)) this.score+=0.5;
+                if(pipe.checkCollide(this.bird)){
+                    // cancelAnimationFrame(this.animationFrameId);
+                    this.gameOver = true;
+                }
+                if(pipe.width+pipe.pos.x < 0) numberOfPipeLost+=1;
             });
+            if(numberOfPipeLost > 0){
+                this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
+            }
+            if(this.ctx){
+                this.background.draw(this.ctx);
+                this.bird.draw(this.ctx);
+                this.pipes.map((pipe) => {
+                    if(this.ctx) pipe.draw(this.ctx);
+                });
+            }
+            // console.log(this.pipes.length);
+            if(this.scoreDisplay){
+                this.scoreDisplay.innerHTML = this.score.toString();
+            }
+            if(this.score != 0 && Math.floor(this.score)%20 == 0){
+                this.background.changeBackground();
+            }
         }
-        // console.log(this.pipes.length);
-        if(this.scoreDisplay){
-            this.scoreDisplay.innerHTML = this.score.toString();
-        }
-        requestAnimationFrame(() => this.run());
+        this.animationFrameId = requestAnimationFrame(() => this.run());
     }
     spawnPipe(): void{
-        const types: string[] = ["up","down"];
-        const type: string = types[Math.floor(Math.random()*types.length)];
-        const height:number = Math.floor(Math.random() * 100)+100;
-        if(type == "up") this.pipes.push(new Pipe(type,{x:1024,y:576-height},height));
-        else this.pipes.push(new Pipe(type,{x:1024,y:0},height));
+        // const types: string[] = ["up","down"];
+        const height:number = Math.floor(Math.random() * 100)+150;
+        const gap: number = Math.floor(Math.random()*80)+150;
+        this.pipes.push(new Pipe("down",{x:1024,y:0},height));
+        this.pipes.push(new Pipe("up",{x:1024,y:576-(this.canvas.height-height-gap)},this.canvas.height-height-gap));
     }
     initial(): void{
         this.highScore = Math.max(this.highScore,this.score);
@@ -99,6 +123,17 @@ class Game {
                 this.canvas.height/2-this.gameOverImage.height/2,
                 this.gameOverImage.width,
                 this.gameOverImage.height
+            );
+        }
+    }
+    drawMessage(): void{
+        if(this.ctx){
+            this.ctx.drawImage(
+                this.message,
+                this.canvas.width/2-this.message.width/2,
+                this.canvas.height/2-this.message.height/2,
+                this.message.width,
+                this.message.height
             );
         }
     }

@@ -6,9 +6,10 @@ export class Bird{
     center:{x:number,y:number};
     height: number;
     width:number;
+    angle: number = 0;
     constructor(pos: {x:number,y:number}){
         this.pos = pos;
-        this.gravity = 0.1;
+        this.gravity = 0.08;
         this.speed = 0;
         this.height = 50;
         this.width = 70;
@@ -20,20 +21,26 @@ export class Bird{
         this.center = {x:this.pos.x+this.width/2,y:this.pos.y+this.height/2};
         window.addEventListener("keydown",(e) =>{
             if(e.key == " "){
-                this.speed = -5;
+                this.speed = -4;
+                this.angle = -Math.PI/3;
             }
         })
     }
     draw(ctx: CanvasRenderingContext2D): void {
+        ctx.save();
+        ctx.translate(this.pos.x,this.pos.y);
+        ctx.rotate(this.angle);
         ctx?.drawImage(
             this.image,
-            this.pos.x,
-            this.pos.y,
+            0,
+            0,
             this.image.width,
             this.image.height
         )
+        ctx.restore();
     }
     update(): void{
+        this.angle = Math.min(this.angle+Math.PI/200,Math.PI/3);
         this.speed+=this.gravity;
         this.pos.y+=this.speed;
         if(this.pos.y < 0) this.pos.y = 0;
