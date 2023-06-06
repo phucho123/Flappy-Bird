@@ -3,8 +3,8 @@ export class Background{
     background2: HTMLImageElement = new Image();
     pos: {x:number,y:number};
     constructor(){
-        this.background1.src = "../assets/images/background-day.png";
-        this.background2.src = "../assets/images/background-day.png";
+        this.background1.src = "../assets/images/background-night.png";
+        this.background2.src = "../assets/images/background-night.png";
         this.pos = {x:0,y:0};
         this.background1.onload = () =>{
             this.background1.width = 1024;
@@ -35,14 +35,14 @@ export class Background{
         this.pos.x-=3;
         if(this.pos.x<=-1024) this.pos.x = 0;
     }
-    changeBackground(): void{
-        if(this.background1.src.split("/").at(-1) == "background-day.png"){
-            this.background1.src = "../assets/images/background-night.png";
-            this.background2.src = "../assets/images/background-night.png";
-        }else if(this.background2.src.split("/").at(-1) == "background-night.png"){
-            this.background1.src = "../assets/images/background-day.png";
-            this.background2.src = "../assets/images/background-day.png";
-        }
+    // changeBackground(): void{
+    //     if(this.background1.src.split("/").at(-1) == "background-day.png"){
+    //         this.background1.src = "../assets/images/background-night.png";
+    //         this.background2.src = "../assets/images/background-night.png";
+    //     }else if(this.background2.src.split("/").at(-1) == "background-night.png"){
+    //         this.background1.src = "../assets/images/background-day.png";
+    //         this.background2.src = "../assets/images/background-day.png";
+    //     }
         
-    }
+    // }
 }

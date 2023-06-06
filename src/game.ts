@@ -12,7 +12,7 @@ class Game {
     bird: Bird = new Bird({x:100,y:288});
     pipes: Pipe[] = [];
     intervalId: any;
-    animationFrameId: number;
+    // animationFrameId: number;
     gameOver: boolean;
     score: number = 0;
     highScore: number = 0;
@@ -46,11 +46,20 @@ class Game {
             this.message.width = 385;
             this.message.height = 550;
         }
-        this.animationFrameId = requestAnimationFrame(() => this.run());
+        // this.animationFrameId = requestAnimationFrame(() => this.run());
+        requestAnimationFrame(() => this.run());
         this.canvas.addEventListener("click",() => {
-            this.bird.speed = -4;
-            this.bird.angle = -Math.PI/3;
-        })
+            if(!this.gameOver){
+                this.bird.speed = -4;
+                this.bird.angle = -Math.PI/3;
+            }
+        });
+        window.addEventListener("keydown",(e) =>{
+            if(e.key == " " && !this.gameOver){
+                this.bird.speed = -4;
+                this.bird.angle = -Math.PI/3;
+            }
+        });
     }
     run(): void{
         if(this.gameInitial){
@@ -60,42 +69,50 @@ class Game {
         }else{
             if(this.bird.pos.y + this.bird.height >= 576) this.gameOver = true;
             if(this.gameOver){
-                cancelAnimationFrame(this.animationFrameId);
+                this.bird.update();
+                if(this.ctx){
+                    this.background.draw(this.ctx);
+                    this.pipes.map((pipe) => {
+                        if(this.ctx) pipe.draw(this.ctx);
+                    });
+                    this.bird.draw(this.ctx);
+                }
+                // cancelAnimationFrame(this.animationFrameId);
                 clearInterval(this.intervalId);
                 this.drawGameOver();
-                return;
+                // return;
             }
-            this.bird.update();
-            this.background.update();
-            let numberOfPipeLost = 0;
-            this.pipes.map((pipe) => {
-                pipe.update();
-                if(pipe.checkScore(this.bird)) this.score+=0.5;
-                if(pipe.checkCollide(this.bird)){
-                    // cancelAnimationFrame(this.animationFrameId);
-                    this.gameOver = true;
-                }
-                if(pipe.width+pipe.pos.x < 0) numberOfPipeLost+=1;
-            });
-            if(numberOfPipeLost > 0){
-                this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
-            }
-            if(this.ctx){
-                this.background.draw(this.ctx);
-                this.bird.draw(this.ctx);
+            else{
+                this.bird.update();
+                this.background.update();
+                let numberOfPipeLost = 0;
                 this.pipes.map((pipe) => {
-                    if(this.ctx) pipe.draw(this.ctx);
+                    pipe.update();
+                    if(pipe.checkScore(this.bird)) this.score+=0.5;
+                    if(pipe.checkCollide(this.bird)){
+                        // cancelAnimationFrame(this.animationFrameId);
+                        this.gameOver = true;
+                    }
+                    if(pipe.width+pipe.pos.x < 0) numberOfPipeLost+=1;
                 });
+                if(numberOfPipeLost > 0){
+                    this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
+                }
+                if(this.ctx){
+                    this.background.draw(this.ctx);
+                    this.bird.draw(this.ctx);
+                    this.pipes.map((pipe) => {
+                        if(this.ctx) pipe.draw(this.ctx);
+                    });
+                }
+                if(this.scoreDisplay){
+                    this.scoreDisplay.innerHTML = this.score.toString();
+                }
             }
-            // console.log(this.pipes.length);
-            if(this.scoreDisplay){
-                this.scoreDisplay.innerHTML = this.score.toString();
-            }
-            if(this.score != 0 && Math.floor(this.score)%20 == 0){
-                this.background.changeBackground();
-            }
+           
         }
-        this.animationFrameId = requestAnimationFrame(() => this.run());
+        // this.animationFrameId = requestAnimationFrame(() => this.run());
+        requestAnimationFrame(() => this.run());
     }
     spawnPipe(): void{
         // const types: string[] = ["up","down"];
@@ -113,7 +130,7 @@ class Game {
         this.intervalId = setInterval(() => this.spawnPipe(),800);
         this.score = 0;
         this.gameOver = false;
-        requestAnimationFrame(() => this.run());
+        // requestAnimationFrame(() => this.run());
     }
     drawGameOver(): void{
         if(this.ctx){
@@ -139,4 +156,4 @@ class Game {
     }
 }
 
-new Game()
+new Game();
