@@ -35,9 +35,9 @@ export class Bird{
         ctx.rotate(this.angle);
         ctx?.drawImage(
             this.image,
-            this.frame*this.originWidth/3,
+            this.frame*this.originWidth/this.maxframe,
             0,
-            this.originWidth/3,
+            this.originWidth/this.maxframe,
             this.originHeight,
             -this.width/2,
             -this.height/2,

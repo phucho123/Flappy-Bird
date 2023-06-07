@@ -15,10 +15,10 @@ export class Pipe{
         this.pos = pos;
         if(this.type == "up") this.image.src = "../assets/images/up-pipe.png";
         else this.image.src = "../assets/images/down-pipe.png";
-        this.image.onload = () => {
-            this.image.width = this.width;
-            this.image.height = this.height;
-        }
+        // this.image.onload = () => {
+        //     this.image.width = this.width;
+        //     this.image.height = this.height;
+        // }
         this.center = {x:this.pos.x+this.width/2,y:this.pos.y+this.height/2};
     }
     draw(ctx:CanvasRenderingContext2D):void {
@@ -26,8 +26,8 @@ export class Pipe{
             this.image,
             this.pos.x,
             this.pos.y,
-            this.image.width,
-            this.image.height
+            this.width,
+            this.height
         )
     }
     update(): void{

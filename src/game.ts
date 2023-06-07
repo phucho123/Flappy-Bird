@@ -2,6 +2,9 @@ import { Background } from "./background";
 import { Bird } from "./bird";
 import { Pipe } from "./pipe";
 import { Audio } from "./audio";
+import { Coin } from "./coin";
+
+
 class Game {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D | null;
@@ -12,6 +15,9 @@ class Game {
     background: Background = new Background();
     bird: Bird = new Bird({x:100,y:288});
     pipes: Pipe[] = [];
+    coins: Coin[] = [];
+    timeToSpawnPipe: number = 0;
+    // timeToSpawnCoin: number = 0;
     // intervalId: any;
     // animationFrameId: number;
     gameOver: boolean;
@@ -20,7 +26,6 @@ class Game {
     gameOverImage: HTMLImageElement = new Image();
     message: HTMLImageElement = new Image();
     gameInitial: boolean = true;
-    timeToSpawnPipe: number = 0;
     audios: Audio = new Audio();
     public constructor() {
         this.canvas = document.getElementById("mycanvas") as HTMLCanvasElement;
@@ -67,6 +72,7 @@ class Game {
         });
     }
     public run(): void{
+        console.log(this.coins.length);
         if(this.gameInitial){
             this.background.update();
             this.background.draw(this.ctx);
@@ -86,6 +92,12 @@ class Game {
                     this.pipes.map((pipe) => {
                         if(this.ctx) pipe.draw(this.ctx);
                     });
+                    this.coins.map(coin => {
+                        if(this.ctx){
+                            coin.animate();
+                            coin.draw(this.ctx);
+                        }
+                    })
                     this.bird.draw(this.ctx);
                 }
                 // cancelAnimationFrame(this.animationFrameId);
@@ -94,15 +106,22 @@ class Game {
                 // return;
             }
             else{
-                let numOfPipeCross = 0;
                 this.timeToSpawnPipe++;
+                // this.timeToSpawnCoin++;
                 if(this.timeToSpawnPipe >= 150){
                     this.timeToSpawnPipe = 0;
                     this.spawnPipe();
                 }
+                // if(this.timeToSpawnCoin >= 237){
+                //     this.timeToSpawnCoin = 0;
+                //     this.spawnCoin();
+                // }
+
                 this.bird.update();
                 this.background.update();
+
                 let numberOfPipeLost = 0;
+                let numOfPipeCross = 0;
                 this.pipes.map((pipe) => {
                     pipe.update();
                     if(pipe.checkScore(this.bird)){
@@ -123,12 +142,31 @@ class Game {
                 if(numberOfPipeLost > 0){
                     this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
                 }
+
+                let numberOfCoinLost = 0;
+                this.coins.map((coin) => {
+                    coin.update();
+                    if(coin.collide(this.bird)){
+                        this.score+=10;
+                        coin.state = true;
+                        this.audios.coin.play();
+                    }
+                    if(coin.width+coin.pos.x < 0) numberOfCoinLost+=1;
+                });
+                if(numberOfCoinLost > 0){
+                    this.coins = this.coins.slice(numberOfCoinLost,this.coins.length);
+                }
+
                 if(this.ctx){
                     this.background.draw(this.ctx);
-                    this.bird.draw(this.ctx);
+                    
+                    this.coins.map((coin) => {
+                        if(this.ctx) coin.draw(this.ctx);
+                    })
                     this.pipes.map((pipe) => {
                         if(this.ctx) pipe.draw(this.ctx);
                     });
+                    this.bird.draw(this.ctx);
                 }
                 if(this.scoreDisplay){
                     this.scoreDisplay.innerHTML = this.score.toString();
@@ -149,11 +187,19 @@ class Game {
             {x:this.canvas.width,y:this.canvas.height-(this.canvas.height-height-gap)},
             this.canvas.height-height-gap)
         );
+        this.spawnCoin(1024+Math.floor(Math.random()*100)+150);
+    }
+    public spawnCoin(xpos:number): void{
+        const height = Math.floor(Math.random()*350)+100;
+        this.coins.push(new Coin({x:xpos,y:height}));
     }
     public initial(): void{
         this.highScore = Math.max(this.highScore,this.score);
         if(this.highScoreDisplay) this.highScoreDisplay.innerHTML = this.highScore.toString();
         this.pipes = [];
+        this.coins = [];
+        // this.timeToSpawnCoin = 0;
+        this.timeToSpawnPipe = 0;
         this.bird.pos.y = 288;
         this.bird.speed = 0;
         // this.intervalId = setInterval(() => this.spawnPipe(),800);
