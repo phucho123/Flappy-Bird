@@ -72,13 +72,12 @@ class Game {
         });
     }
     public run(): void{
-        console.log(this.coins.length);
-        if(this.gameInitial){
+        if(this.gameInitial){ /// Handle when open the game the first time
             this.background.update();
             this.background.draw(this.ctx);
             this.drawMessage();
         }else{
-            if(this.bird.pos.y + this.bird.height >= this.canvas.height){
+            if(this.bird.pos.y + this.bird.height >= this.canvas.height){ /// If bird touch the ground, game over
                 if(!this.gameOver){
                     this.audios.hit.play();
                     this.audios.die.play();
@@ -86,6 +85,7 @@ class Game {
                 this.gameOver = true;
             }
             if(this.gameOver){
+                /// Handle when game over
                 this.bird.update();
                 if(this.ctx){
                     this.background.draw(this.ctx);
@@ -106,9 +106,10 @@ class Game {
                 // return;
             }
             else{
+                //// Increase time to spawn pipe
                 this.timeToSpawnPipe++;
                 // this.timeToSpawnCoin++;
-                if(this.timeToSpawnPipe >= 150){
+                if(this.timeToSpawnPipe >= 150){ /// Spawn pipe
                     this.timeToSpawnPipe = 0;
                     this.spawnPipe();
                 }
@@ -117,9 +118,11 @@ class Game {
                 //     this.spawnCoin();
                 // }
 
+                /// Update bird and background
                 this.bird.update();
                 this.background.update();
 
+                /// Update pipes and check collided bird
                 let numberOfPipeLost = 0;
                 let numOfPipeCross = 0;
                 this.pipes.map((pipe) => {
@@ -135,14 +138,17 @@ class Game {
                     }
                     if(pipe.width+pipe.pos.x < 0) numberOfPipeLost+=1;
                 });
+                //// Update Score
                 if(numOfPipeCross){
                     this.score+=Math.floor(numOfPipeCross);
                     this.audios.point.play();
                 }
+                /// Remove pipe is outside the canvas
                 if(numberOfPipeLost > 0){
                     this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
                 }
 
+                /// Update coins and check coin collided bird
                 let numberOfCoinLost = 0;
                 this.coins.map((coin) => {
                     coin.update();
@@ -153,10 +159,12 @@ class Game {
                     }
                     if(coin.width+coin.pos.x < 0) numberOfCoinLost+=1;
                 });
+                //// Remove coin when it is outside the canvas 
                 if(numberOfCoinLost > 0){
                     this.coins = this.coins.slice(numberOfCoinLost,this.coins.length);
                 }
 
+                ///// Draw 
                 if(this.ctx){
                     this.background.draw(this.ctx);
                     
@@ -168,6 +176,8 @@ class Game {
                     });
                     this.bird.draw(this.ctx);
                 }
+
+                ////Display Score to UI
                 if(this.scoreDisplay){
                     this.scoreDisplay.innerHTML = this.score.toString();
                 }
