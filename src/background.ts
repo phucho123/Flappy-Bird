@@ -43,6 +43,5 @@ export class Background{
     //         this.background1.src = "../assets/images/background-day.png";
     //         this.background2.src = "../assets/images/background-day.png";
     //     }
-        
     // }
 }

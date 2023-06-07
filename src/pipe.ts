@@ -51,7 +51,6 @@ export class Pipe{
                 height
             )
         }
-        
     }
     update(): void{
         this.pos.x-=3;

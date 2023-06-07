@@ -16,8 +16,8 @@ export class Bird{
         this.pos = pos;
         this.gravity = 0.08;
         this.speed = 0;
-        this.height = 50;
-        this.width = 70;
+        this.height = 40;
+        this.width = 56;
         this.image.src = '../assets/images/yellowbird-animate.png';
         this.image.onload = () =>{
             this.originWidth = this.image.width;
