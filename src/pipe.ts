@@ -22,13 +22,36 @@ export class Pipe{
         this.center = {x:this.pos.x+this.width/2,y:this.pos.y+this.height/2};
     }
     draw(ctx:CanvasRenderingContext2D):void {
-        ctx?.drawImage(
-            this.image,
-            this.pos.x,
-            this.pos.y,
-            this.width,
-            this.height
-        )
+        if(this.type == "down"){
+            const height = (this.image.height/this.image.width)*this.width;
+            if(height > this.height){
+                ctx?.drawImage(
+                    this.image,
+                    this.pos.x,
+                    this.pos.y-(height-this.height),
+                    this.width,
+                    height
+                )
+            }else{
+                ctx?.drawImage(
+                    this.image,
+                    this.pos.x,
+                    this.pos.y,
+                    this.width,
+                    height
+                )
+            }
+        }else{
+            const height = (this.image.height/this.image.width)*this.width;
+            ctx?.drawImage(
+                this.image,
+                this.pos.x,
+                this.pos.y,
+                this.width,
+                height
+            )
+        }
+        
     }
     update(): void{
         this.pos.x-=3;
