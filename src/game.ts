@@ -72,7 +72,7 @@ class Game {
             this.background.draw(this.ctx);
             this.drawMessage();
         }else{
-            if(this.bird.pos.y + this.bird.height >= 576){
+            if(this.bird.pos.y + this.bird.height >= this.canvas.height){
                 if(!this.gameOver){
                     this.audios.hit.play();
                     this.audios.die.play();
@@ -143,10 +143,10 @@ class Game {
         // const types: string[] = ["up","down"];
         const height:number = Math.floor(Math.random() * 100)+120;
         const gap: number = Math.floor(Math.random()*100)+150;
-        this.pipes.push(new Pipe("down",{x:1024,y:0},height));
+        this.pipes.push(new Pipe("down",{x:this.canvas.width,y:0},height));
         this.pipes.push(
             new Pipe("up",
-            {x:1024,y:576-(this.canvas.height-height-gap)},
+            {x:this.canvas.width,y:this.canvas.height-(this.canvas.height-height-gap)},
             this.canvas.height-height-gap)
         );
     }

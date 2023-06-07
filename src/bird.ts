@@ -39,8 +39,8 @@ export class Bird{
             0,
             this.originWidth/3,
             this.originHeight,
-            0,
-            0,
+            -this.width/2,
+            -this.height/2,
             this.width,
             this.height
         )
