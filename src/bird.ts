@@ -22,7 +22,7 @@ export class Bird{
         this.image.onload = () =>{
             this.originWidth = this.image.width;
             this.originHeight = this.image.height;
-            console.log(this.originWidth,this.originHeight);
+            // console.log(this.originWidth,this.originHeight);
             // this.image.width = this.width;
             // this.image.height = this.height;
             // console.log(this.width,this.height);

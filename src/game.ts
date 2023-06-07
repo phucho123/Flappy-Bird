@@ -1,6 +1,7 @@
 import { Background } from "./background";
 import { Bird } from "./bird";
 import { Pipe } from "./pipe";
+import { Audio } from "./audio";
 class Game {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D | null;
@@ -11,7 +12,7 @@ class Game {
     background: Background = new Background();
     bird: Bird = new Bird({x:100,y:288});
     pipes: Pipe[] = [];
-    intervalId: any;
+    // intervalId: any;
     // animationFrameId: number;
     gameOver: boolean;
     score: number = 0;
@@ -19,6 +20,8 @@ class Game {
     gameOverImage: HTMLImageElement = new Image();
     message: HTMLImageElement = new Image();
     gameInitial: boolean = true;
+    timeToSpawnPipe: number = 0;
+    audios: Audio = new Audio();
     public constructor() {
         this.canvas = document.getElementById("mycanvas") as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
@@ -32,7 +35,7 @@ class Game {
             this.startButton.onclick = () =>{
                 if(this.gameInitial){
                     this.gameInitial = false;
-                    this.intervalId = setInterval(() => this.spawnPipe(),1000);
+                    // this.intervalId = setInterval(() => this.spawnPipe(),1000);
                 }
                 if(this.gameOver) this.initial();
             }
@@ -50,12 +53,14 @@ class Game {
         requestAnimationFrame(() => this.run());
         this.canvas.addEventListener("click",() => {
             if(!this.gameOver){
+                this.audios.wing.play();
                 this.bird.speed = -4;
                 this.bird.angle = -Math.PI/3;
             }
         });
-        window.addEventListener("keydown",(e) =>{
+        window.addEventListener("keypress",(e) =>{
             if(e.key == " " && !this.gameOver){
+                this.audios.wing.play();
                 this.bird.speed = -4;
                 this.bird.angle = -Math.PI/3;
             }
@@ -67,7 +72,13 @@ class Game {
             this.background.draw(this.ctx);
             this.drawMessage();
         }else{
-            if(this.bird.pos.y + this.bird.height >= 576) this.gameOver = true;
+            if(this.bird.pos.y + this.bird.height >= 576){
+                if(!this.gameOver){
+                    this.audios.hit.play();
+                    this.audios.die.play();
+                }
+                this.gameOver = true;
+            }
             if(this.gameOver){
                 this.bird.update();
                 if(this.ctx){
@@ -78,23 +89,37 @@ class Game {
                     this.bird.draw(this.ctx);
                 }
                 // cancelAnimationFrame(this.animationFrameId);
-                clearInterval(this.intervalId);
+                // clearInterval(this.intervalId);
                 this.drawGameOver();
                 // return;
             }
             else{
+                let numOfPipeCross = 0;
+                this.timeToSpawnPipe++;
+                if(this.timeToSpawnPipe >= 150){
+                    this.timeToSpawnPipe = 0;
+                    this.spawnPipe();
+                }
                 this.bird.update();
                 this.background.update();
                 let numberOfPipeLost = 0;
                 this.pipes.map((pipe) => {
                     pipe.update();
-                    if(pipe.checkScore(this.bird)) this.score+=0.5;
+                    if(pipe.checkScore(this.bird)){
+                        numOfPipeCross+=0.5;
+                    }
                     if(pipe.checkCollide(this.bird)){
                         // cancelAnimationFrame(this.animationFrameId);
+                        this.audios.hit.play();
+                        this.audios.die.play();
                         this.gameOver = true;
                     }
                     if(pipe.width+pipe.pos.x < 0) numberOfPipeLost+=1;
                 });
+                if(numOfPipeCross){
+                    this.score+=Math.floor(numOfPipeCross);
+                    this.audios.point.play();
+                }
                 if(numberOfPipeLost > 0){
                     this.pipes = this.pipes.slice(numberOfPipeLost,this.pipes.length);
                 }
@@ -131,7 +156,7 @@ class Game {
         this.pipes = [];
         this.bird.pos.y = 288;
         this.bird.speed = 0;
-        this.intervalId = setInterval(() => this.spawnPipe(),800);
+        // this.intervalId = setInterval(() => this.spawnPipe(),800);
         this.score = 0;
         this.gameOver = false;
         // requestAnimationFrame(() => this.run());
