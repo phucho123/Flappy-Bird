@@ -97,6 +97,7 @@ export class GameManager {
                 this.pipes.push(pipe2)
             }
         } else {
+            console.log('Create new pipe')
             this.pipes.push(new Pipe('down', { x: this.canvas.width, y: 0 }, height))
             this.pipes.push(
                 new Pipe(
@@ -124,6 +125,7 @@ export class GameManager {
                 this.coins.push(coin1)
             }
         } else {
+            console.log('Create new coin')
             this.coins.push(new Coin({ x: xpos, y: height }))
         }
     }

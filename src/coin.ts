@@ -1,16 +1,16 @@
 import { Bird } from './Bird'
 import { DELTA_TIME } from './setting'
 export class Coin {
-    private pos: { x: number; y: number }
+    private pos: Position
     private frame = 0
     private maxFrame = 10
     private height = 50
     private width = 50
     private image: HTMLImageElement = new Image()
     private animationTime = 0
-    private center: { x: number; y: number }
+    private center: Position
     private state = false
-    public constructor(pos: { x: number; y: number }) {
+    public constructor(pos: Position) {
         this.pos = pos
         this.image.src = '../assets/images/coin-animation.png'
         this.center = { x: this.pos.x + this.width / 2, y: this.pos.y + this.height / 2 }
@@ -62,13 +62,13 @@ export class Coin {
     public getHeight(): number {
         return this.height
     }
-    public getCenter(): { x: number; y: number } {
+    public getCenter(): Position {
         return this.center
     }
-    public getPos(): { x: number; y: number } {
+    public getPos(): Position {
         return this.pos
     }
-    public setPos(pos: { x: number; y: number }): void {
+    public setPos(pos: Position): void {
         this.pos.x = pos.x
         this.pos.y = pos.y
     }
