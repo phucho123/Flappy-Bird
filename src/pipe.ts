@@ -3,13 +3,13 @@ import { DELTA_TIME } from './setting'
 
 export class Pipe {
     private type: string
-    private pos: { x: number; y: number }
+    private pos: Position
     private height: number
     private width: number
     private image: HTMLImageElement = new Image()
-    private center: { x: number; y: number }
+    private center: Position
     private state = false
-    public constructor(type: string, pos: { x: number; y: number }, height: number) {
+    public constructor(type: string, pos: Position, height: number) {
         this.type = type
         this.height = height
         this.width = 70
@@ -74,13 +74,13 @@ export class Pipe {
     public setHeight(height: number): void {
         this.height = height
     }
-    public getCenter(): { x: number; y: number } {
+    public getCenter(): Position {
         return this.center
     }
-    public getPos(): { x: number; y: number } {
+    public getPos(): Position {
         return this.pos
     }
-    public setPos(pos: { x: number; y: number }): void {
+    public setPos(pos: Position): void {
         this.pos.x = pos.x
         this.pos.y = pos.y
     }

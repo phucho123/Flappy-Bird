@@ -3,7 +3,7 @@ import { DELTA_TIME } from './setting'
 export class Background {
     private background1: HTMLImageElement = new Image()
     private background2: HTMLImageElement = new Image()
-    private pos: { x: number; y: number }
+    private pos: Position
     public constructor() {
         this.background1.src = '../assets/images/background-night.png'
         this.background2.src = '../assets/images/background-night.png'

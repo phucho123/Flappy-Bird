@@ -1,10 +1,10 @@
 import { CANVAS_HEIGHT, DELTA_TIME } from './setting'
 export class Bird {
-    private pos: { x: number; y: number }
+    private pos: Position
     private gravity: number
     private image: HTMLImageElement = new Image()
     private speed: number
-    private center: { x: number; y: number }
+    private center: Position
     private height: number
     private width: number
     private angle = 0
@@ -13,7 +13,7 @@ export class Bird {
     private originWidth: number
     private originHeight: number
     private animationTime = 0
-    public constructor(pos: { x: number; y: number }) {
+    public constructor(pos: Position) {
         this.pos = pos
         this.gravity = 0.08
         this.speed = 0
@@ -68,13 +68,13 @@ export class Bird {
     public getHeight(): number {
         return this.height
     }
-    public getCenter(): { x: number; y: number } {
+    public getCenter(): Position {
         return this.center
     }
-    public getPos(): { x: number; y: number } {
+    public getPos(): Position {
         return this.pos
     }
-    public setPos(pos: { x: number; y: number }): void {
+    public setPos(pos: Position): void {
         this.pos.x = pos.x
         this.pos.y = pos.y
     }

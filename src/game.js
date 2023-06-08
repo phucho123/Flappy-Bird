@@ -1,8 +1,8 @@
-"use strict";
+"use strict"
 class Game {
     constructor() {
-        console.log('Game created');
+        console.log('Game created')
     }
 }
-new Game();
+new Game()
 //# sourceMappingURL=game.js.map

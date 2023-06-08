@@ -42,14 +42,12 @@ export class GameManager {
             this.message.width = 385
             this.message.height = 550
         }
-        this.handleClickInput()
-        this.handleKeyInput()
-        requestAnimationFrame(() => this.run())
     }
     public run(): void {
         const timeNow = Date.now()
         this.deltaTime = timeNow - this.clock
         this.clock = timeNow
+
         if (this.gameInitial) {
             this.handleGameInitial()
         } else {
@@ -77,7 +75,7 @@ export class GameManager {
     }
     public spawnPipe(): void {
         const height: number = Math.floor(Math.random() * 200) + 120
-        const gap: number = Math.floor(Math.random() * 100) + 120
+        const gap: number = Math.floor(Math.random() * 100) + 100
         if (this.extraPipes.length >= 2) {
             const pipe1 = this.extraPipes.shift()
             const pipe2 = this.extraPipes.shift()
