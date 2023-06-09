@@ -1,4 +1,4 @@
-import { DELTA_TIME } from './setting'
+import { CANVAS_HEIGHT, CANVAS_WIDTH, DELTA_TIME } from './setting'
 
 export class Background {
     private background1: HTMLImageElement = new Image()
@@ -10,12 +10,12 @@ export class Background {
         this.background2.src = '../assets/images/background-night.png'
         this.pos = { x: 0, y: 0 }
         this.background1.onload = () => {
-            this.background1.width = 1024
-            this.background1.height = 576
+            this.background1.width = CANVAS_WIDTH
+            this.background1.height = CANVAS_HEIGHT
         }
         this.background2.onload = () => {
-            this.background2.width = 1024
-            this.background2.height = 576
+            this.background2.width = CANVAS_WIDTH
+            this.background2.height = CANVAS_HEIGHT
         }
     }
 
