@@ -4,6 +4,7 @@ export class Background {
     private background1: HTMLImageElement = new Image()
     private background2: HTMLImageElement = new Image()
     private pos: Position
+
     public constructor() {
         this.background1.src = '../assets/images/background-night.png'
         this.background2.src = '../assets/images/background-night.png'
@@ -17,6 +18,7 @@ export class Background {
             this.background2.height = 576
         }
     }
+
     public draw(ctx: CanvasRenderingContext2D | null): void {
         ctx?.drawImage(
             this.background1,
@@ -33,6 +35,7 @@ export class Background {
             this.background2.height
         )
     }
+
     public update(deltaTime: number): void {
         this.pos.x -= (3 * deltaTime) / DELTA_TIME
         if (this.pos.x <= -1024) this.pos.x = 0

@@ -4,6 +4,7 @@ export class Audio {
     private die: HTMLAudioElement
     private point: HTMLAudioElement
     private coin: HTMLAudioElement
+
     public constructor() {
         this.hit = document.getElementById('hit-audio') as HTMLAudioElement
         this.wing = document.getElementById('wing-audio') as HTMLAudioElement
@@ -14,18 +15,23 @@ export class Audio {
         this.point.playbackRate = 2
         this.coin.playbackRate = 2
     }
+
     public playHitAudio() {
         this.hit.play()
     }
+
     public playWingAudio() {
         this.wing.play()
     }
+
     public playDieAudio() {
         this.die.play()
     }
+
     public playPointAudio() {
         this.point.play()
     }
+
     public playCoinAudio() {
         this.coin.play()
     }

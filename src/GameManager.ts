@@ -43,6 +43,7 @@ export class GameManager {
             this.message.height = 550
         }
     }
+
     public run(): void {
         const timeNow = Date.now()
         this.deltaTime = timeNow - this.clock
@@ -58,21 +59,17 @@ export class GameManager {
                 this.handleGameOver()
             } else {
                 this.increaseTimeToSpawnPipes()
-
                 this.bird.update(this.deltaTime)
-
                 this.background.update(this.deltaTime)
-
                 this.updatePipes(this.deltaTime)
-
                 this.updateCoins(this.deltaTime)
-
                 this.drawGame()
             }
         }
         this.drawScore()
         requestAnimationFrame(() => this.run())
     }
+
     public spawnPipe(): void {
         const height: number = Math.floor(Math.random() * 200) + 120
         const gap: number = Math.floor(Math.random() * 100) + 100
@@ -146,6 +143,7 @@ export class GameManager {
         this.score = 0
         this.gameOver = false
     }
+
     public drawGameOver(): void {
         if (this.ctx) {
             this.ctx.drawImage(
@@ -157,6 +155,7 @@ export class GameManager {
             )
         }
     }
+
     public drawMessage(): void {
         if (this.ctx) {
             this.ctx.drawImage(
@@ -168,6 +167,7 @@ export class GameManager {
             )
         }
     }
+
     public drawScore(): void {
         if (this.ctx) {
             this.ctx.fillStyle = 'black'
@@ -177,11 +177,13 @@ export class GameManager {
             this.ctx.fillText(`Score: ${this.score}`, 10, 100)
         }
     }
+
     public drawStartButton(): void {
         if (this.ctx) {
             this.ctx.drawImage(this.startButton, 800, 400, 200, 100)
         }
     }
+
     public drawGame(): void {
         if (this.ctx) {
             this.background.draw(this.ctx)
@@ -197,6 +199,7 @@ export class GameManager {
             this.bird.draw(this.ctx)
         }
     }
+
     public updateCoins(deltaTime: number): void {
         let numberOfCoinLost = 0
         this.coins.map((coin) => {
@@ -216,6 +219,7 @@ export class GameManager {
             }
         }
     }
+
     public updatePipes(deltaTime: number): void {
         let numberOfPipeLost = 0
         let numOfPipeCross = 0
@@ -244,6 +248,7 @@ export class GameManager {
             }
         }
     }
+
     public increaseTimeToSpawnPipes(): void {
         this.timeToSpawnPipe += (1 * this.deltaTime) / DELTA_TIME
 
@@ -252,6 +257,7 @@ export class GameManager {
             this.spawnPipe()
         }
     }
+
     public handleGameOver(): void {
         this.bird.update(this.deltaTime)
         if (this.ctx) {
@@ -271,12 +277,14 @@ export class GameManager {
         this.drawGameOver()
         this.drawStartButton()
     }
+
     public handleGameInitial(): void {
         this.background.update(this.deltaTime)
         this.background.draw(this.ctx)
         this.drawMessage()
         this.drawStartButton()
     }
+
     public handleBirdTouchGround(): void {
         if (!this.gameOver) {
             this.audios.playHitAudio()
@@ -284,6 +292,7 @@ export class GameManager {
         }
         this.gameOver = true
     }
+
     public handleClickInput(): void {
         this.canvas.addEventListener('click', (e) => {
             if (!this.gameOver) {
@@ -309,6 +318,7 @@ export class GameManager {
             }
         })
     }
+
     public handleKeyInput(): void {
         window.addEventListener('keypress', (e) => {
             if (e.key == ' ' && !this.gameOver) {
