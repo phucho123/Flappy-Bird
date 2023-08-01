@@ -13,7 +13,7 @@ export class Coin {
 
     public constructor(pos: Position) {
         this.pos = pos
-        this.image.src = '../assets/images/coin-animation.png'
+        this.image.src = 'assets/images/coin-animation.png'
         this.center = { x: this.pos.x + this.width / 2, y: this.pos.y + this.height / 2 }
     }
 

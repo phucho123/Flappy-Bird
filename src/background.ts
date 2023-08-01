@@ -6,8 +6,8 @@ export class Background {
     private pos: Position
 
     public constructor() {
-        this.background1.src = '../assets/images/background-night.png'
-        this.background2.src = '../assets/images/background-night.png'
+        this.background1.src = 'assets/images/background-night.png'
+        this.background2.src = 'assets/images/background-night.png'
         this.pos = { x: 0, y: 0 }
         this.background1.onload = () => {
             this.background1.width = CANVAS_WIDTH

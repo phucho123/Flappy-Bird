@@ -15,8 +15,8 @@ export class Pipe {
         this.height = height
         this.width = 70
         this.pos = pos
-        if (this.type == 'up') this.image.src = '../assets/images/up-pipe.png'
-        else this.image.src = '../assets/images/down-pipe.png'
+        if (this.type == 'up') this.image.src = 'assets/images/up-pipe.png'
+        else this.image.src = 'assets/images/down-pipe.png'
 
         this.center = { x: this.pos.x + this.width / 2, y: this.pos.y + this.height / 2 }
     }

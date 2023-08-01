@@ -31,9 +31,9 @@ export class GameManager {
         this.ctx = this.canvas.getContext('2d')
         this.canvas.height = CANVAS_HEIGHT
         this.canvas.width = CANVAS_WIDTH
-        this.message.src = '../assets/images/message.png'
-        this.startButton.src = '../assets/images/start-button.png'
-        this.gameOverImage.src = '../assets/images/gameover.png'
+        this.message.src = 'assets/images/message.png'
+        this.startButton.src = 'assets/images/start-button.png'
+        this.gameOverImage.src = 'assets/images/gameover.png'
         this.gameOverImage.onload = () => {
             this.gameOverImage.width = 450
             this.gameOverImage.height = 100

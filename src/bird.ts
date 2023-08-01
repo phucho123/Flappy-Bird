@@ -20,7 +20,7 @@ export class Bird {
         this.speed = 0
         this.height = 40
         this.width = 56
-        this.image.src = '../assets/images/yellowbird-animate.png'
+        this.image.src = 'assets/images/yellowbird-animate.png'
         this.image.onload = () => {
             this.originWidth = this.image.width
             this.originHeight = this.image.height
